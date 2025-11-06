@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design System Bootcamp - โปรแกรมเรียนสายออกแบบและ AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #0099ff;
+            --color-dark: #17171700;
+            --color-text-dark: #171717;
+            --color-text-light: #666666;
+            --color-bg-light: #faf9f6;
+            --color-white: #ffffff;
+            --color-accent: #ff6b6b;
+            --color-success: #51cf66;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 40px;
+            --spacing-xl: 80px;
+            --spacing-xxl: 160px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            color: var(--color-text-dark);
+            background-color: var(--color-bg-light);
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--color-white);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-xl);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-dark);
+        }
+
+        .logo span {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-bg-light) 0%, #fdfcfb 100%);
+        }
+
+        .hero-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 0.8fr;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+            max-width: 600px;
+        }
+
+        .hero-text h1 .highlight {
+            color: var(--color-primary);
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-lg);
+            max-width: 550px;
+            line-height: 1.8;
+        }
+
+        .pricing-box {
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: var(--spacing-lg);
+            max-width: 500px;
+        }
+
+        .pricing-box h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .price-regular {
+            font-size: 18px;
+            color: var(--color-text-light);
+            text-decoration: line-through;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .price-earlybird {
+            display: flex;
+            align-items: baseline;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .price-earlybird .amount {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--color-accent);
+        }
+
+        .price-earlybird .currency {
+            font-size: 18px;
+            color: var(--color-text-light);
+        }
+
+        .price-badge {
+            display: inline-block;
+            background: #ffe0e0;
+            color: var(--color-accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .cta-button {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background: #0080cc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 153, 255, 0.3);
+        }
+
+        .urgency-text {
+            font-size: 13px;
+            color: var(--color-accent);
+            margin-top: var(--spacing-sm);
+            font-weight: 600;
+        }
+
+        .hero-image {
+            height: 560px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: var(--color-white);
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            padding: var(--spacing-lg);
+            background: var(--color-bg-light);
+            border-radius: 16px;
+            border: 1px solid #f0ede8;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .benefit-icon {
+            font-size: 40px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .benefit-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .benefit-card p {
+            color: var(--color-text-light);
+            font-size: 15px;
+        }
+
+        /* Course Details Section */
+        .course-details {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-bg-light) 0%, #fdfcfb 100%);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-xl);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .detail-item {
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: 16px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .detail-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            color: var(--color-text-dark);
+        }
+
+        .detail-item p {
+            color: var(--color-text-light);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* Curriculum Section */
+        .curriculum {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: var(--color-white);
+        }
+
+        .curriculum-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .curriculum-item {
+            display: flex;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--color-bg-light);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .curriculum-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            min-width: 40px;
+        }
+
+        .curriculum-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .curriculum-content p {
+            color: var(--color-text-light);
+            font-size: 14px;
+        }
+
+        /* Target Audience Section */
+        .audience {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        }
+
+        .audience-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .audience-item {
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            border: 2px solid var(--color-primary);
+        }
+
+        .audience-item h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
+        }
+
+        .audience-item p {
+            color: var(--color-text-light);
+            font-size: 15px;
+        }
+
+        /* Registration Section */
+        .registration {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-primary) 0%, #0080cc 100%);
+            color: white;
+        }
+
+        .registration-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .registration-info h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.3;
+        }
+
+        .registration-info p {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.8;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: white;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-button {
+            background: white;
+            color: var(--color-primary);
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: var(--spacing-sm);
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Social Proof Section */
+        .social-proof {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: var(--color-white);
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .testimonial {
+            background: var(--color-bg-light);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            border-left: 4px solid var(--color-success);
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-bottom: var(--spacing-sm);
+            font-size: 14px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
+        .testimonial-role {
+            font-size: 13px;
+            color: var(--color-text-light);
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-bg-light) 0%, #fdfcfb 100%);
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--color-white);
+            margin-bottom: var(--spacing-md);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0ede8;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-question {
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--color-bg-light);
+        }
+
+        .faq-toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            background: var(--color-bg-light);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            padding: var(--spacing-lg);
+            color: var(--color-text-light);
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-text-dark);
+            color: white;
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .footer-links a {
+            color: #0099ff;
+            text-decoration: none;
+            margin: 0 var(--spacing-md);
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            font-size: 13px;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                display: none;
+            }
+
+            .hero-text h1 {
+                font-size: 32px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: var(--spacing-md);
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="container">
+            <div class="logo">AI<span>Design</span>System</div>
+            <ul class="nav-links">
+                <li><a href="#benefits">จุดเด่น</a></li>
+                <li><a href="#curriculum">หลักสูตร</a></li>
+                <li><a href="#faq">คำถาม</a></li>
+                <li><a href="#contact">ติดต่อ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>เรียนรู้ <span class="highlight">AI Design System</span><br>ปลดล็อกศักยภาพใหม่สายออกแบบและดาต้า!</h1>
+                <p>คอร์สเข้มข้น 6 เดือน เรียนสด สอนโดยผู้เชี่ยวชาญ พร้อมสร้างโปรเจกต์จริง</p>
+
+                <div class="pricing-box">
+                    <h3>ราคาพิเศษสำหรับผู้สมัครเร็ว</h3>
+                    <div class="price-regular">ราคาปกติ 45,000 บาท</div>
+                    <div class="price-earlybird">
+                        <span class="amount">29,000</span>
+                        <span class="currency">บาท</span>
+                    </div>
+                    <span class="price-badge">Early Bird Special</span>
+                    <button class="cta-button" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})">
+                        สมัครตอนนี้!
+                    </button>
+                    <div class="urgency-text">⚡ เหลือที่นั่ง Early Bird เพียง 15 ที่เท่านั้น!</div>
+                    <div style="margin-top: 12px; font-size: 13px; color: rgba(23, 23, 23, 0.6);">จำนวนจำกัด ปิดรับภายในวันที่ 31 ธันวาคม 2024</div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div>AI Design System Bootcamp</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title">จุดเด่นของคอร์สนี้</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎓</div>
+                    <h3>สอนสดทุกบท</h3>
+                    <p>พร้อมเวิร์กช็อปปฏิบัติจริง และการ feedback จากผู้สอนทีละคนอย่างละเอียด</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚙️</div>
+                    <h3>เทคโนโลยี AI ล่าสุด</h3>
+                    <p>เรียนรู้เครื่องมือและเทคโนโลยี AI ล่าสุดที่ใช้ในวงการจริง พร้อม best practices</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💼</div>
+                    <h3>Portfolio ระดับโปร</h3>
+                    <p>สร้างผลงาน Portfolio ที่พร้อมใช้งานได้จริง และสามารถนำเสนอต่อนายจ้าง</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>Networking & Mentorship</h3>
+                    <p>เชื่อมต่อกับผู้เชี่ยวชาญในวงการ และได้รับคำแนะนำด้านอาชีพ</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>สำหรับทุกระดับ</h3>
+                    <p>เหมาะสำหรับสายออกแบบ UX/UI และผู้ที่อยากต่อยอดทักษะด้าน AI</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <h3>เชื่อมต่อ Data</h3>
+                    <p>บูรณาการความรู้เกี่ยวกับ Data และ Design เพื่อสร้างระบบที่ยั่งยืน</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Details Section -->
+    <section class="course-details">
+        <div class="container">
+            <h2 class="section-title">รายละเอียดคอร์ส</h2>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <h4>⏱️ ระยะเวลา</h4>
+                    <p>6 เดือน<br>สัปดาห์ละ 2 วัน<br>ๆ ละ 8 ชั่วโมง (รวม 96 ชั่วโมงเรียน)</p>
+                </div>
+                <div class="detail-item">
+                    <h4>📚 รูปแบบการเรียน</h4>
+                    <p>สด/ออนไลน์ (Hybrid)<br>พร้อมการบ้านและโปรเจกต์<br>บันทึกการเรียน พร้อมให้เข้าชมซ้ำได้</p>
+                </div>
+                <div class="detail-item">
+                    <h4>👥 ขนาดชั้นเรียน</h4>
+                    <p>จำกัดเพียง 20 คนต่อชั้น<br>เพื่อให้ได้รับการสอนแบบ hands-on<br>ที่มีคุณภาพ</p>
+                </div>
+                <div class="detail-item">
+                    <h4>🎓 ใบประกาศ</h4>
+                    <p>ได้ใบประกาศแสดงการศึกษา<br>พร้อม Digital Badge<br>ที่สามารถใช้ในการสมัครงาน</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Section -->
+    <section class="audience">
+        <div class="container">
+            <h2 class="section-title">ใครเหมาะกับคอร์สนี้</h2>
+            <div class="audience-list">
+                <div class="audience-item">
+                    <h3>🎨 นักออกแบบ / UX UI Designer</h3>
+                    <p>ต้องการเพิ่มทักษะด้าน AI และ Design System เพื่อยก level งานของตัวเอง</p>
+                </div>
+                <div class="audience-item">
+                    <h3>📊 ผู้ทำงานด้านดาต้า/Software Developer</h3>
+                    <p>อยากเข้าใจด้านออกแบบมากขึ้น และประยุกต์ AI ในการพัฒนาผลิตภัณฑ์</p>
+                </div>
+                <div class="audience-item">
+                    <h3>🚀 บุคคลทั่วไปที่มีความสนใจ</h3>
+                    <p>อยากสร้างพื้นฐาน AI และ Design Thinking เพื่อประยุกต์ใช้กับงานของตนเอง</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section class="curriculum" id="curriculum">
+        <div class="container">
+            <h2 class="section-title">หลักสูตรการเรียน</h2>
+            <div class="curriculum-list">
+                <div class="curriculum-item">
+                    <div class="curriculum-number">1</div>
+                    <div class="curriculum-content">
+                        <h3>พื้นฐาน AI & Design System</h3>
+                        <p>เข้าใจแนวคิดพื้นฐานของ AI, Machine Learning และความสัมพันธ์กับ Design System ที่สมัยใหม่</p>
+                    </div>
+                </div>
+                <div class="curriculum-item">
+                    <div class="curriculum-number">2</div>
+                    <div class="curriculum-content">
+                        <h3>ออกแบบส่วนต่อประสานกับ Human-AI Interaction</h3>
+                        <p>เรียนรู้หลักการออกแบบที่เน้นการโต้ตอบระหว่างมนุษย์และ AI อย่างมีประสิทธิภาพและเป็นธรรม</p>
+                    </div>
+                </div>
+                <div class="curriculum-item">
+                    <div class="curriculum-number">3</div>
+                    <div class="curriculum-content">
+                        <h3>Ethics & Responsible AI</h3>
+                        <p>สำรวจประเด็นด้านจริยธรรม ความเป็นธรรม และความรับผิดชอบในการพัฒนา AI ระบบ</p>
+                    </div>
+                </div>
+                <div class="curriculum-item">
+                    <div class="curriculum-number">4</div>
+                    <div class="curriculum-content">
+                        <h3>การออกแบบและทดสอบระบบจริง</h3>
+                        <p>งาน Hands-on ในการออกแบบ prototype ทดสอบ iterate และปรับปรุงระบบตัวจริง</p>
+                    </div>
+                </div>
+                <div class="curriculum-item">
+                    <div class="curriculum-number">5</div>
+                    <div class="curriculum-content">
+                        <h3>Tools & Technology Stack</h3>
+                        <p>เรียนรู้เครื่องมือ Figma, Framer, Python, API Integration และเทคโนโลยีอื่นๆ ที่จำเป็น</p>
+                    </div>
+                </div>
+                <div class="curriculum-item">
+                    <div class="curriculum-number">6</div>
+                    <div class="curriculum-content">
+                        <h3>นำเสนอ Capstone Project</h3>
+                        <p>สรุปผลงานและนำเสนอ Capstone Project ต่อผู้บริหาร ได้รับ feedback และสามารถนำไปใช้งานต่อ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration" id="registration">
+        <div class="registration-container">
+            <div class="registration-info">
+                <h2>พร้อมเข้าร่วม AI Design System Bootcamp หรือยัง?</h2>
+                <p>สมัครสอบถามเพิ่มเติม ติดตามข้อมูล และรับสิทธิพิเศษ Early Bird ราคา 29,000 บาทเพียงนั้น!</p>
+                <div style="margin-top: var(--spacing-xl); font-size: 14px; opacity: 0.9;">
+                    <p>📞 เบอร์โทร: 02-XXX-XXXX</p>
+                    <p>💬 Line: @aidesignsystem</p>
+                </div>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label for="name">ชื่อ-นามสกุล</label>
+                    <input type="text" id="name" name="name" placeholder="กรุณากรอกชื่อ-นามสกุล" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">อีเมล</label>
+                    <input type="email" id="email" name="email" placeholder="กรุณากรอกอีเมล" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">เบอร์โทรศัพท์</label>
+                    <input type="tel" id="phone" name="phone" placeholder="กรุณากรอกเบอร์โทร" required>
+                </div>
+                <button type="submit" class="form-button">ลงทะเบียนรับสิทธิ์ Early Bird ฟรี!</button>
+                <div style="margin-top: 12px; font-size: 12px; text-align: center; opacity: 0.9;">
+                    เราจะติดต่อกลับภายใน 24 ชั่วโมง
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof">
+        <div class="container">
+            <h2 class="section-title">ความพึงพอใจจากผู้เรียนที่ผ่านมา</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-text">
+                        "หลังจากจบคอร์ส ฉันได้งานใหม่ที่มีเงินเดือนสูงขึ้นจากเดิม 40% และได้ประยุกต์ AI ในงานออกแบบของตัวเองจริงๆ"
+                    </div>
+                    <div class="testimonial-author">นางสาว ภัญญา ม.</div>
+                    <div class="testimonial-role">UX/UI Designer, Tech Startup</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-text">
+                        "สอนแบบสด แต่มีบันทึกให้ดูซ้ำ เข้าใจง่าย และผู้สอนช่วยตอบข้อสงสัยอย่างละเอียด ปรึกษาเรื่องอาชีพด้วย"
+                    </div>
+                    <div class="testimonial-author">นายสมศักดิ์ ก.</div>
+                    <div class="testimonial-role">Data Analyst, Digital Agency</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-text">
+                        "Portfolio ที่สร้างในคอร์สนี้ช่วยให้ฉันประสบความสำเร็จในการประจำตัวต่อลูกค้าและได้ freelance project ที่มี value สูง"
+                    </div>
+                    <div class="testimonial-author">นางสาว กิตติยา ค.</div>
+                    <div class="testimonial-role">Freelance Designer</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">คำถามที่พบบ่อย</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>ต้องมีพื้นฐาน Design หรือ AI ไหม?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ไม่จำเป็นต้องมีพื้นฐานใดๆ เลย คอร์สนี้ออกแบบมาให้รับผู้เรียนทุกระดับ ตั้งแต่초급ไปจนถึงเบื้องต้นมีความรู้ เราจะ review พื้นฐานและสอนจากศูนย์ (Zero) ขึ้นไปให้ชัดเจน</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>ถ้าไม่มีพื้นฐานจะเข้าใจไหม?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ใช่ค่ะ มีผู้สอนที่พร้อมอธิบายและตอบข้อสงสัยอย่างละเอียด นอกจากนี้ยังมี peer learning ที่คุณสามารถเรียนจากเพื่อนในชั้นเรียน และมีการ record บทเรียนให้ดูซ้ำได้</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>คอร์สนี้ได้ใบประกาศหรือไม่?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ได้ค่ะ เมื่อเรียนจบ คุณจะได้ใบประกาศแสดงการศึกษา (Certificate of Completion) พร้อม Digital Badge ที่สามารถใช้ในการ resume และ LinkedIn profile</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>สามารถเรียนแบบ Part-time ได้ไหม?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ได้ค่ะ คอร์สออกแบบมาให้เหมาะสำหรับผู้ที่มีงานประจำ สัปดาห์ละ 2 วันเท่านั้น และสามารถเลือกเวลา (เช้า/บ่าย/เย็น) ที่เหมาะสมกับตัวคุณได้</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>ถ้าติดวาระไม่อาจมาเรียนทั้งหมด จะเป็นยังไง?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ไม่เป็นไร หากจำเป็นต้องขาด คุณสามารถเข้าเรียนบทที่ขาด จากวิดีโอบันทึก และปรึกษาผู้สอนผ่าน chat หรือ office hours ได้</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>ราคา Early Bird สมัครเมื่อไหร่ได้?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ราคา Early Bird 29,000 บาท จำกัดเพียง 15 ที่เท่านั้น และปิดรับภายในวันที่ 31 ธันวาคม 2024 หรือเต็มที่นั่งแล้ว แนะนำให้สมัครโดยเร็ว!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>หลังจบคอร์สแล้วมี Job Placement ไหม?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>มีการสนับสนุนจากทีมผู้สอนในด้านการประจำตัวและช่วยเสนอแนะงาน รวมถึงการสร้าง portfolio ที่ช่วยให้คุณได้งานได้ง่ายขึ้น</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: var(--spacing-lg);">AI Design System Bootcamp</h3>
+            <div class="footer-links">
+                <a href="#benefits">เกี่ยวกับเรา</a>
+                <a href="#curriculum">หลักสูตร</a>
+                <a href="#faq">คำถาม</a>
+                <a href="mailto:info@aidesignsystem.com">ติดต่อเรา</a>
+                <a href="#">นโยบายความเป็นส่วนตัว</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Design System Bootcamp. All rights reserved.</p>
+                <p>📧 Email: info@aidesignsystem.com | 📞 Phone: 02-XXX-XXXX | 💬 Line: @aidesignsystem</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+        }
+
+        // Form submission handler
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('ขอบคุณสำหรับการสมัคร! เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง');
+            this.reset();
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

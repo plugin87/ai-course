@@ -1,0 +1,66 @@
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#111111;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="yellowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffed4e;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#bgGradient)"/>
+
+  <!-- Decorative circles with yellow glow -->
+  <circle cx="200" cy="100" r="150" fill="url(#yellowGradient)" opacity="0.1" filter="url(#glow)"/>
+  <circle cx="1000" cy="500" r="200" fill="url(#yellowGradient)" opacity="0.08" filter="url(#glow)"/>
+  <circle cx="600" cy="300" r="100" fill="url(#yellowGradient)" opacity="0.05"/>
+
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffd700" stroke-width="0.5" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="600" fill="url(#grid)"/>
+
+  <!-- Main text content area background -->
+  <rect x="50" y="150" width="500" height="300" rx="20" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.3"/>
+
+  <!-- Accent lines -->
+  <line x1="50" y1="150" x2="550" y2="150" stroke="url(#yellowGradient)" stroke-width="3" opacity="0.6"/>
+  <line x1="50" y1="450" x2="350" y2="450" stroke="url(#yellowGradient)" stroke-width="3" opacity="0.4"/>
+
+  <!-- Geometric shapes for visual interest -->
+  <polygon points="700,100 900,100 950,200 900,300 700,300 650,200" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.15"/>
+
+  <!-- Circles for tech feel -->
+  <circle cx="750" cy="200" r="15" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.3"/>
+  <circle cx="850" cy="250" r="20" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.2"/>
+  <circle cx="900" cy="150" r="12" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.25"/>
+
+  <!-- Dot pattern on right side -->
+  <g opacity="0.15">
+    <circle cx="1050" cy="100" r="8" fill="#ffd700"/>
+    <circle cx="1100" cy="150" r="6" fill="#ffd700"/>
+    <circle cx="1130" cy="220" r="7" fill="#ffd700"/>
+    <circle cx="1100" cy="280" r="8" fill="#ffd700"/>
+    <circle cx="1040" cy="320" r="6" fill="#ffd700"/>
+  </g>
+
+  <!-- Wave pattern at bottom -->
+  <path d="M 0 450 Q 300 400 600 450 T 1200 450 L 1200 600 L 0 600 Z" fill="#ffd700" opacity="0.03"/>
+  <path d="M 0 480 Q 300 430 600 480 T 1200 480 L 1200 600 L 0 600 Z" fill="#ffd700" opacity="0.02"/>
+</svg>
