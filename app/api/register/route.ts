@@ -1,5 +1,7 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,18 +15,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create transporter with Gmail
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    })
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
 
     // Email to admin (designlazyyy@gmail.com)
-    const adminMailOptions = {
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'AI Design System <onboarding@resend.dev>',
       to: 'designlazyyy@gmail.com',
       subject: 'New Course Registration - AI Design System Bootcamp',
       html: `
@@ -39,11 +41,11 @@ export async function POST(request: NextRequest) {
         <hr/>
         <p><em>This is an automated email from your AI Design System Bootcamp registration form.</em></p>
       `,
-    }
+    })
 
     // Confirmation email to user
-    const userMailOptions = {
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'AI Design System <onboarding@resend.dev>',
       to: email,
       subject: 'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
       html: `
@@ -66,11 +68,7 @@ export async function POST(request: NextRequest) {
         <p>หากมีคำถาม โปรดติดต่อ: designlazyyy@gmail.com</p>
         <p><em>ขอบคุณ!</em></p>
       `,
-    }
-
-    // Send emails
-    await transporter.sendMail(adminMailOptions)
-    await transporter.sendMail(userMailOptions)
+    })
 
     return NextResponse.json(
       { message: 'Registration received successfully' },
