@@ -1,12 +1,51 @@
 import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 // Initialize Resend with API key from environment
-const apiKey = process.env.RESEND_API_KEY || ''
-const resend = apiKey ? new Resend(apiKey) : null
+const resendApiKey = process.env.RESEND_API_KEY || ''
+const resend = resendApiKey ? new Resend(resendApiKey) : null
 
-// Save registration data - works both locally and on Cloudflare Workers
-async function saveRegistrationData(data: any) {
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
+
+// Save registration data to Supabase database
+async function saveToSupabase(data: any) {
+  if (!supabase) {
+    console.warn('Supabase not configured')
+    return false
+  }
+
+  try {
+    const { data: savedData, error } = await supabase
+      .from('registrations')
+      .insert([
+        {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          line_id: data.lineId,
+          submitted_at: new Date().toISOString(),
+        },
+      ])
+
+    if (error) {
+      console.error('Supabase insert error:', error)
+      return false
+    }
+
+    console.log('Registration saved to Supabase:', savedData)
+    return true
+  } catch (error) {
+    console.error('Error saving to Supabase:', error)
+    return false
+  }
+}
+
+// Fallback: Save registration data to filesystem (local development only)
+async function saveRegistrationDataLocal(data: any) {
   try {
     // Try to save to filesystem if available (local development)
     if (typeof process !== 'undefined' && process.versions?.node) {
@@ -34,7 +73,7 @@ async function saveRegistrationData(data: any) {
       }
     }
   } catch (error) {
-    console.error('Error in saveRegistrationData:', error)
+    console.error('Error in saveRegistrationDataLocal:', error)
   }
 }
 
@@ -61,8 +100,15 @@ export async function POST(request: NextRequest) {
 
     const registrationData = { name, email, phone, lineId }
 
-    // Save registration data as backup
-    await saveRegistrationData(registrationData)
+    // Save registration data to Supabase (primary)
+    const saved = await saveToSupabase(registrationData)
+
+    // Also save locally as fallback
+    await saveRegistrationDataLocal(registrationData)
+
+    if (!saved) {
+      console.warn('Registration not saved to Supabase, but saved locally')
+    }
 
     // Try to send emails via Resend (if API key is configured)
     if (resend) {
