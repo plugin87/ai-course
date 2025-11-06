@@ -1,34 +1,40 @@
 import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
-import { promises as fs } from 'fs'
-import { join } from 'path'
 
 // Initialize Resend with API key from environment
 const apiKey = process.env.RESEND_API_KEY || ''
 const resend = apiKey ? new Resend(apiKey) : null
 
+// Save registration data - works both locally and on Cloudflare Workers
 async function saveRegistrationData(data: any) {
   try {
-    const registrationsDir = join(process.cwd(), 'registrations')
+    // Try to save to filesystem if available (local development)
+    if (typeof process !== 'undefined' && process.versions?.node) {
+      try {
+        const { promises: fs } = await import('fs')
+        const { join } = await import('path')
 
-    // Ensure directory exists
-    await fs.mkdir(registrationsDir, { recursive: true })
+        const registrationsDir = join(process.cwd(), 'registrations')
+        await fs.mkdir(registrationsDir, { recursive: true })
 
-    // Save with timestamp
-    const timestamp = new Date().toISOString()
-    const filename = `registration_${Date.now()}.json`
-    const filepath = join(registrationsDir, filename)
+        const timestamp = new Date().toISOString()
+        const filename = `registration_${Date.now()}.json`
+        const filepath = join(registrationsDir, filename)
 
-    const registrationData = {
-      ...data,
-      submittedAt: timestamp,
-      id: Date.now(),
+        const registrationData = {
+          ...data,
+          submittedAt: timestamp,
+          id: Date.now(),
+        }
+
+        await fs.writeFile(filepath, JSON.stringify(registrationData, null, 2))
+        console.log(`Registration saved to ${filename}`)
+      } catch (fsError) {
+        console.log('Filesystem not available (expected on Cloudflare Workers)')
+      }
     }
-
-    await fs.writeFile(filepath, JSON.stringify(registrationData, null, 2))
-    console.log(`Registration saved to ${filename}`)
   } catch (error) {
-    console.error('Error saving registration data:', error)
+    console.error('Error in saveRegistrationData:', error)
   }
 }
 

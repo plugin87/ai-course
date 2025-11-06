@@ -1,0 +1,16 @@
+name = "designlazyyy-ai"
+type = "javascript"
+compatibility_date = "2024-11-06"
+main = "public/index.js"
+
+[build]
+command = "npm run build"
+
+[env.production]
+name = "designlazyyy-ai-production"
+routes = [
+  { pattern = "designlazyyy-ai.pages.dev/*" }
+]
+
+[env.development]
+name = "designlazyyy-ai-development"
