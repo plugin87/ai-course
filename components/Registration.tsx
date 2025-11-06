@@ -11,6 +11,7 @@ export default function Registration() {
     lineId: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -20,17 +21,36 @@ export default function Registration() {
     }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Simulate form submission
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setFormData({ name: '', email: '', phone: '', lineId: '' })
+    setLoading(true)
 
-    // Reset success message after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false)
-    }, 3000)
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        setSubmitted(true)
+        setFormData({ name: '', email: '', phone: '', lineId: '' })
+
+        // Reset success message after 3 seconds
+        setTimeout(() => {
+          setSubmitted(false)
+        }, 3000)
+      } else {
+        alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -157,9 +177,10 @@ export default function Registration() {
 
               <button
                 type="submit"
-                className="w-full bg-dark text-primary py-4 px-6 rounded-lg font-bold text-lg hover:opacity-90 transition-all hover:shadow-lg hover:-translate-y-1"
+                disabled={loading}
+                className="w-full bg-dark text-primary py-4 px-6 rounded-lg font-bold text-lg hover:opacity-90 transition-all hover:shadow-lg hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                ลงทะเบียนรับสิทธิ์ Early Bird ฟรี!
+                {loading ? 'กำลังส่ง...' : 'ลงทะเบียนรับสิทธิ์ Early Bird ฟรี!'}
               </button>
 
               <p className="text-sm text-dark/70 text-center mt-4 font-medium">
