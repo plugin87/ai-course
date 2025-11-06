@@ -58,10 +58,10 @@ export async function POST(request: NextRequest) {
 
     // Try to send emails via Resend
     try {
-      // Email to admin (designlazyyy@gmail.com)
+      // Email to admin (info@designlazyyy.com)
       await resend.emails.send({
         from: 'AI Design System <onboarding@resend.dev>',
-        to: 'designlazyyy@gmail.com',
+        to: 'info@designlazyyy.com',
         subject: 'New Course Registration - AI Design System Bootcamp',
         html: `
           <h2>New Registration Received!</h2>
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
           <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
           <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
           <hr/>
-          <p>หากมีคำถาม โปรดติดต่อ: designlazyyy@gmail.com</p>
+          <p>หากมีคำถาม โปรดติดต่อ: info@designlazyyy.com</p>
           <p><em>ขอบคุณ!</em></p>
         `,
       })
