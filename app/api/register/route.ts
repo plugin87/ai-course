@@ -14,7 +14,8 @@ const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supa
 // Helper function to get current Bangkok time in ISO format
 function getBangkokTime(): string {
   const now = new Date()
-  const bangkokTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }))
+  // Bangkok is UTC+7, so add 7 hours to UTC time
+  const bangkokTime = new Date(now.getTime() + (7 * 60 * 60 * 1000))
   return bangkokTime.toISOString()
 }
 
