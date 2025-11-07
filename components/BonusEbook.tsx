@@ -26,24 +26,24 @@ export default function BonusEbook() {
         {/* Images Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-12 items-center">
           {/* Book Cover */}
-          <div className="flex justify-center h-96">
+          <div className="flex justify-center items-center h-96 flex-1">
             <Image
               src="/images/Book cover@3x.png"
               alt="E-Book Cover - From Graphic Design สู่ UX/UI Designer"
               width={300}
               height={400}
-              className="h-full w-auto rounded-xl shadow-2xl"
+              className="h-full w-full object-contain rounded-xl shadow-2xl"
             />
           </div>
 
           {/* Content List */}
-          <div className="flex justify-center h-96">
+          <div className="flex justify-center items-center h-96 flex-1">
             <Image
               src="/images/01. List of Content@3x.png"
               alt="E-Book Content List"
               width={400}
               height={500}
-              className="h-full w-auto rounded-xl shadow-2xl"
+              className="h-full w-full object-contain rounded-xl shadow-2xl"
             />
           </div>
         </div>
