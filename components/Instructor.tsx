@@ -63,7 +63,7 @@ export default function Instructor() {
                   <div className="text-sm text-text-light">Years Experience</div>
                 </div>
                 <div className="bg-dark-bg rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-primary">50+</div>
+                  <div className="text-2xl font-bold text-primary">300+</div>
                   <div className="text-sm text-text-light">Projects Delivered</div>
                 </div>
               </div>
