@@ -69,7 +69,7 @@ export default function Instructor() {
               </div>
 
               {/* Certifications */}
-              <div className="pt-6 border-t border-dark-card">
+              <div className="pt-6 border-t border-dark-card text-left">
                 <div className="text-sm text-text-light mb-3">ใบรับรอง & Certification:</div>
                 <div className="grid grid-cols-2 gap-2">
                   {certifications.map((cert, idx) => (
