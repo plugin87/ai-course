@@ -23,80 +23,38 @@ function getCurrentTimestamp(): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${ms}`
 }
 
-// Get a new access token using refresh token
-async function getAccessToken(refreshToken: string): Promise<string | null> {
-  try {
-    const clientId = process.env.GOOGLE_CLIENT_ID
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET
-
-    if (!clientId || !clientSecret) {
-      console.error('Google OAuth credentials not configured')
-      return null
-    }
-
-    const response = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        refresh_token: refreshToken,
-        grant_type: 'refresh_token',
-      }).toString(),
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      console.error('Token refresh error:', error)
-      return null
-    }
-
-    const { access_token } = await response.json()
-    return access_token
-  } catch (error) {
-    console.error('Error refreshing access token:', error)
-    return null
-  }
-}
-
-// Send emails via Gmail API
-async function sendGmailEmails(data: any, accessToken: string) {
+// Send emails via Gmail SMTP with Nodemailer
+async function sendEmails(data: any) {
   try {
     const { name, email, phone, lineId } = data
     const adminEmail = 'designlazyyy@gmail.com'
+    const gmailAppPassword = process.env.GMAIL_APP_PASSWORD
 
-    // Helper function to send email via Gmail API
-    async function sendEmail(to: string, subject: string, htmlContent: string) {
-      const message = {
-        raw: Buffer.from(
-          `From: ${adminEmail}\r\n` +
-            `To: ${to}\r\n` +
-            `Subject: ${subject}\r\n` +
-            `Content-Type: text/html; charset="UTF-8"\r\n\r\n` +
-            htmlContent
-        ).toString('base64'),
-      }
-
-      const response = await fetch(
-        'https://www.googleapis.com/gmail/v1/users/me/messages/send',
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(message),
-        }
-      )
-
-      return response.ok
+    if (!gmailAppPassword) {
+      console.warn('Gmail app password not configured, emails not sent')
+      return false
     }
 
-    // Email to admin
-    const adminEmailSent = await sendEmail(
-      adminEmail,
-      'New Course Registration - AI Design System Bootcamp',
-      `
+    console.log('Initializing email sender...')
+
+    // Import nodemailer
+    const nodemailer = await import('nodemailer')
+
+    // Create transporter using Gmail SMTP
+    const transporter = nodemailer.default.createTransport({
+      service: 'gmail',
+      auth: {
+        user: adminEmail,
+        pass: gmailAppPassword,
+      },
+    })
+
+    console.log('Sending admin notification email...')
+    const adminEmailSent = await transporter.sendMail({
+      from: adminEmail,
+      to: adminEmail,
+      subject: 'New Course Registration - AI Design System Bootcamp',
+      html: `
         <h2>New Registration Received!</h2>
         <p><strong>Course:</strong> AI Design System Bootcamp</p>
         <hr/>
@@ -106,15 +64,18 @@ async function sendGmailEmails(data: any, accessToken: string) {
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Line ID:</strong> ${lineId}</p>
         <hr/>
-        <p><em>Submitted at: ${new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}</em></p>
-      `
-    )
+        <p><em>Submitted at: ${getCurrentTimestamp()}</em></p>
+      `,
+    })
 
-    // Confirmation email to user
-    const userEmailSent = await sendEmail(
-      email,
-      'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
-      `
+    console.log('✓ Admin email sent:', !!adminEmailSent.messageId)
+
+    console.log('Sending confirmation email to user...')
+    const userEmailSent = await transporter.sendMail({
+      from: adminEmail,
+      to: email,
+      subject: 'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
+      html: `
         <h2>ขอบคุณที่สมัครเข้าร่วม AI Design System Bootcamp!</h2>
         <p>สวัสดี ${name},</p>
         <p>เราได้รับการลงทะเบียนของคุณแล้ว เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง</p>
@@ -133,12 +94,14 @@ async function sendGmailEmails(data: any, accessToken: string) {
         <hr/>
         <p>หากมีคำถาม โปรดติดต่อ: ${adminEmail}</p>
         <p><em>ขอบคุณ!</em></p>
-      `
-    )
+      `,
+    })
 
-    return adminEmailSent && userEmailSent
+    console.log('✓ User confirmation email sent:', !!userEmailSent.messageId)
+
+    return !!adminEmailSent.messageId && !!userEmailSent.messageId
   } catch (error) {
-    console.error('Gmail API email sending failed:', error)
+    console.error('Email sending failed:', error)
     return false
   }
 }
@@ -241,37 +204,14 @@ export async function POST(request: NextRequest) {
       console.warn('Registration not saved to Supabase, but saved locally')
     }
 
-    // Try to send emails via Gmail API (if user has authorized)
-    let emailSent = false
+    // Try to send emails
+    console.log('Attempting to send emails...')
+    const emailSent = await sendEmails(registrationData)
 
-    if (userId && supabase) {
-      try {
-        // Retrieve refresh token from Supabase
-        const { data: tokenData, error: tokenError } = await supabase
-          .from('oauth_tokens')
-          .select('refresh_token')
-          .eq('id', userId)
-          .single()
-
-        if (!tokenError && tokenData?.refresh_token) {
-          // Get a fresh access token
-          const accessToken = await getAccessToken(tokenData.refresh_token)
-
-          if (accessToken) {
-            emailSent = await sendGmailEmails(registrationData, accessToken)
-
-            if (emailSent) {
-              console.log('Emails sent successfully via Gmail API')
-            }
-          }
-        }
-      } catch (gmailError) {
-        console.error('Gmail API error:', gmailError)
-      }
-    }
-
-    if (!emailSent) {
-      console.log('Emails not sent via Gmail API. Registration data saved to backup (Supabase + JSON).')
+    if (emailSent) {
+      console.log('✓ Emails sent successfully!')
+    } else {
+      console.log('⚠ Email sending failed or not configured')
     }
 
     return NextResponse.json(
