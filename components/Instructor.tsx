@@ -29,9 +29,9 @@ export default function Instructor() {
 
         {/* Testimonial Card */}
         <div className="bg-dark-card rounded-3xl p-12">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            {/* Image - Left */}
-            <div className="flex flex-shrink-0">
+          <div className="flex flex-col gap-12 items-center">
+            {/* Image - Top */}
+            <div className="flex justify-center">
               <img
                 src="/images/instructor.jpeg"
                 alt="Designlazyyy"
@@ -40,7 +40,7 @@ export default function Instructor() {
             </div>
 
             {/* Testimonial Content */}
-            <div className="space-y-6 flex-1">
+            <div className="space-y-6 w-full">
               <div>
                 <p className="text-lg text-primary font-semibold">
                   Design System Expert & AI Specialist
