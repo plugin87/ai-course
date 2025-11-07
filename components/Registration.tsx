@@ -15,9 +15,16 @@ export default function Registration() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
+
+    // Filter phone field to only accept digits
+    let finalValue = value
+    if (name === 'phone') {
+      finalValue = value.replace(/[^0-9]/g, '')
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: finalValue,
     }))
   }
 
