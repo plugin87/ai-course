@@ -43,7 +43,7 @@ export default function Instructor() {
             <div className="space-y-6 flex-1">
               <div>
                 <p className="text-lg text-primary font-semibold">
-                  Design System Expert & UX/UI Design Master
+                  Design System Expert & AI Specialist
                 </p>
               </div>
 
