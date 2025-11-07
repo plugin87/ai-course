@@ -29,7 +29,7 @@ export default function BonusEbook() {
           <div className="flex justify-center">
             <div className="bg-dark rounded-2xl p-8 flex justify-center">
               <Image
-                src="/images/Book cover.png"
+                src="/images/Book cover@3x.png"
                 alt="E-Book Cover - From Graphic Design สู่ UX/UI Designer"
                 width={300}
                 height={400}
@@ -41,7 +41,7 @@ export default function BonusEbook() {
           {/* Content List */}
           <div className="flex justify-center">
             <Image
-              src="/images/01. List of Content.png"
+              src="/images/01. List of Content@3x.png"
               alt="E-Book Content List"
               width={400}
               height={500}
