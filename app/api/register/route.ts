@@ -6,12 +6,9 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
-// Helper function to get current Bangkok time in ISO format
-function getBangkokTime(): string {
-  const now = new Date()
-  // Bangkok is UTC+7, so add 7 hours to UTC time
-  const bangkokTime = new Date(now.getTime() + (7 * 60 * 60 * 1000))
-  return bangkokTime.toISOString()
+// Get current UTC time (Supabase will store in UTC, display layer will format to Bangkok)
+function getCurrentTimestamp(): string {
+  return new Date().toISOString()
 }
 
 // Get a new access token using refresh token
@@ -150,7 +147,7 @@ async function saveToSupabase(data: any) {
           email: data.email,
           phone: data.phone,
           line_id: data.lineId,
-          submitted_at: getBangkokTime(),
+          submitted_at: getCurrentTimestamp(),
         },
       ])
 
@@ -178,7 +175,7 @@ async function saveRegistrationDataLocal(data: any) {
         const registrationsDir = join(process.cwd(), 'registrations')
         await fs.mkdir(registrationsDir, { recursive: true })
 
-        const timestamp = getBangkokTime()
+        const timestamp = getCurrentTimestamp()
         const filename = `registration_${Date.now()}.json`
         const filepath = join(registrationsDir, filename)
 
