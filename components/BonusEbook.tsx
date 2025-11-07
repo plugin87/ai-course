@@ -76,7 +76,7 @@ export default function BonusEbook() {
               </li>
               <li className="flex items-start gap-3 text-text-light">
                 <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
-                <span>Accessible ตลอดชีวิตก職าของคุณ</span>
+                <span>สามารถเข้าถึงได้ตลอดเวลา ตลอดชีวิต</span>
               </li>
             </ul>
           </div>
@@ -86,10 +86,10 @@ export default function BonusEbook() {
         <div className="text-center">
           <div className="bg-gradient-to-r from-primary/10 via-dark to-dark-bg rounded-2xl p-8 border border-primary/30">
             <h3 className="text-2xl font-bold text-light mb-4">
-              ที่รอแค่นี้ก็ได้ประสิทธิผลแล้ว...
+              อย่าเสียโอกาส ราคา Early Bird หมดแล้ว!
             </h3>
             <p className="text-lg text-primary font-bold">
-              เลือกเรียนวันนี้ รับโบนัสนี้ไปเลย! 🚀
+              สมัครตอนนี้ รับ E-Book + Certificate + Portfolio ครบครัน 🎁
             </p>
           </div>
         </div>
