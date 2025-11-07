@@ -93,9 +93,18 @@ export default function Registration() {
               <h3 className="text-2xl sm:text-3xl font-bold text-dark mb-2 sm:mb-3">
                 ขอบคุณสำหรับการสมัคร!
               </h3>
-              <p className="text-sm sm:text-base opacity-85">
+              <p className="text-sm sm:text-base opacity-85 mb-4">
                 เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง
               </p>
+              <div className="bg-dark/10 rounded-lg p-4 sm:p-6 border-2 border-dark/20">
+                <p className="text-xs sm:text-sm font-semibold text-dark mb-2">📧 อีเมลยืนยันการสมัครถูกส่งไปแล้ว</p>
+                <p className="text-xs sm:text-sm opacity-80">
+                  กรุณาตรวจสอบอีเมลของท่าน (รวมถึงโฟลเดอร์ Spam/Promotions)
+                </p>
+                <p className="text-xs sm:text-sm opacity-80 mt-2">
+                  ติดต่อเรา: 099-414-5665
+                </p>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
