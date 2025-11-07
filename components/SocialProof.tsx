@@ -45,7 +45,6 @@ export default function SocialProof() {
 
               {/* Author Info */}
               <div className="border-t border-dark-card/50 pt-4">
-                <p className="font-bold text-light">{testimonial.author}</p>
                 <p className="text-sm text-text-light">{testimonial.role}</p>
               </div>
             </div>
