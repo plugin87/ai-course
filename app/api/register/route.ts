@@ -1,7 +1,6 @@
 import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import nodemailer from 'nodemailer'
 
 // Initialize Resend with API key from environment
 const resendApiKey = process.env.RESEND_API_KEY || ''
@@ -12,17 +11,125 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
-// Initialize Gmail SMTP transporter
-const gmailTransporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER || '',
-    pass: process.env.GMAIL_APP_PASSWORD || '',
-  },
-})
+// Get a new access token using refresh token
+async function getAccessToken(refreshToken: string): Promise<string | null> {
+  try {
+    const clientId = process.env.GOOGLE_CLIENT_ID
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 
-// Check if Gmail is configured
-const isGmailConfigured = !!(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD)
+    if (!clientId || !clientSecret) {
+      console.error('Google OAuth credentials not configured')
+      return null
+    }
+
+    const response = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        refresh_token: refreshToken,
+        grant_type: 'refresh_token',
+      }).toString(),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('Token refresh error:', error)
+      return null
+    }
+
+    const { access_token } = await response.json()
+    return access_token
+  } catch (error) {
+    console.error('Error refreshing access token:', error)
+    return null
+  }
+}
+
+// Send emails via Gmail API
+async function sendGmailEmails(data: any, accessToken: string) {
+  try {
+    const { name, email, phone, lineId } = data
+    const adminEmail = 'designlazyyy@gmail.com'
+
+    // Helper function to send email via Gmail API
+    async function sendEmail(to: string, subject: string, htmlContent: string) {
+      const message = {
+        raw: Buffer.from(
+          `From: ${adminEmail}\r\n` +
+            `To: ${to}\r\n` +
+            `Subject: ${subject}\r\n` +
+            `Content-Type: text/html; charset="UTF-8"\r\n\r\n` +
+            htmlContent
+        ).toString('base64'),
+      }
+
+      const response = await fetch(
+        'https://www.googleapis.com/gmail/v1/users/me/messages/send',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        }
+      )
+
+      return response.ok
+    }
+
+    // Email to admin
+    const adminEmailSent = await sendEmail(
+      adminEmail,
+      'New Course Registration - AI Design System Bootcamp',
+      `
+        <h2>New Registration Received!</h2>
+        <p><strong>Course:</strong> AI Design System Bootcamp</p>
+        <hr/>
+        <h3>Applicant Information:</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Line ID:</strong> ${lineId}</p>
+        <hr/>
+        <p><em>Submitted at: ${new Date().toLocaleString('th-TH')}</em></p>
+      `
+    )
+
+    // Confirmation email to user
+    const userEmailSent = await sendEmail(
+      email,
+      'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
+      `
+        <h2>ขอบคุณที่สมัครเข้าร่วม AI Design System Bootcamp!</h2>
+        <p>สวัสดี ${name},</p>
+        <p>เราได้รับการลงทะเบียนของคุณแล้ว เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง</p>
+        <hr/>
+        <h3>ข้อมูลการลงทะเบียน:</h3>
+        <p><strong>ชื่อ:</strong> ${name}</p>
+        <p><strong>อีเมล:</strong> ${email}</p>
+        <p><strong>เบอร์โทร:</strong> ${phone}</p>
+        <p><strong>Line ID:</strong> ${lineId}</p>
+        <hr/>
+        <h3>รายละเอียดคอร์ส:</h3>
+        <p><strong>ระยะเวลา:</strong> 6 เดือนเต็ม 192 ชั่วโมง</p>
+        <p><strong>เรียน:</strong> สัปดาห์ละ 8 ชั่วโมง</p>
+        <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
+        <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
+        <hr/>
+        <p>หากมีคำถาม โปรดติดต่อ: ${adminEmail}</p>
+        <p><em>ขอบคุณ!</em></p>
+      `
+    )
+
+    return adminEmailSent && userEmailSent
+  } catch (error) {
+    console.error('Gmail API email sending failed:', error)
+    return false
+  }
+}
 
 // Save registration data to Supabase database
 async function saveToSupabase(data: any) {
@@ -57,74 +164,9 @@ async function saveToSupabase(data: any) {
   }
 }
 
-// Send emails via Gmail SMTP
-async function sendGmailEmails(data: any) {
-  if (!isGmailConfigured) {
-    console.warn('Gmail not configured - skipping email send')
-    return false
-  }
-
-  try {
-    const { name, email, phone, lineId } = data
-
-    // Email to admin (designlazyyy@gmail.com)
-    await gmailTransporter.sendMail({
-      from: `"AI Design System" <${process.env.GMAIL_USER}>`,
-      to: 'designlazyyy@gmail.com',
-      subject: 'New Course Registration - AI Design System Bootcamp',
-      html: `
-        <h2>New Registration Received!</h2>
-        <p><strong>Course:</strong> AI Design System Bootcamp</p>
-        <hr/>
-        <h3>Applicant Information:</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Line ID:</strong> ${lineId}</p>
-        <hr/>
-        <p><em>Submitted at: ${new Date().toLocaleString('th-TH')}</em></p>
-      `,
-    })
-
-    // Confirmation email to user
-    await gmailTransporter.sendMail({
-      from: `"AI Design System Bootcamp" <${process.env.GMAIL_USER}>`,
-      to: email,
-      subject: 'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
-      html: `
-        <h2>ขอบคุณที่สมัครเข้าร่วม AI Design System Bootcamp!</h2>
-        <p>สวัสดี ${name},</p>
-        <p>เราได้รับการลงทะเบียนของคุณแล้ว เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง</p>
-        <hr/>
-        <h3>ข้อมูลการลงทะเบียน:</h3>
-        <p><strong>ชื่อ:</strong> ${name}</p>
-        <p><strong>อีเมล:</strong> ${email}</p>
-        <p><strong>เบอร์โทร:</strong> ${phone}</p>
-        <p><strong>Line ID:</strong> ${lineId}</p>
-        <hr/>
-        <h3>รายละเอียดคอร์ส:</h3>
-        <p><strong>ระยะเวลา:</strong> 6 เดือนเต็ม 192 ชั่วโมง</p>
-        <p><strong>เรียน:</strong> สัปดาห์ละ 8 ชั่วโมง</p>
-        <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
-        <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
-        <hr/>
-        <p>หากมีคำถาม โปรดติดต่อ: designlazyyy@gmail.com</p>
-        <p><em>ขอบคุณ!</em></p>
-      `,
-    })
-
-    console.log('Gmail emails sent successfully')
-    return true
-  } catch (error) {
-    console.error('Gmail sending failed:', error)
-    return false
-  }
-}
-
-// Fallback: Save registration data to filesystem (local development only)
+// Save registration data to filesystem (local development only)
 async function saveRegistrationDataLocal(data: any) {
   try {
-    // Try to save to filesystem if available (local development)
     if (typeof process !== 'undefined' && process.versions?.node) {
       try {
         const { promises: fs } = await import('fs')
@@ -156,7 +198,7 @@ async function saveRegistrationDataLocal(data: any) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, phone, lineId } = await request.json()
+    const { name, email, phone, lineId, userId } = await request.json()
 
     // Validate required fields
     if (!name || !email || !phone || !lineId) {
@@ -187,13 +229,36 @@ export async function POST(request: NextRequest) {
       console.warn('Registration not saved to Supabase, but saved locally')
     }
 
-    // Try to send emails via Gmail SMTP first (primary method)
+    // Try to send emails via Gmail API (if user has authorized)
     let emailSent = false
-    if (isGmailConfigured) {
-      emailSent = await sendGmailEmails(registrationData)
+
+    if (userId && supabase) {
+      try {
+        // Retrieve refresh token from Supabase
+        const { data: tokenData, error: tokenError } = await supabase
+          .from('oauth_tokens')
+          .select('refresh_token')
+          .eq('id', userId)
+          .single()
+
+        if (!tokenError && tokenData?.refresh_token) {
+          // Get a fresh access token
+          const accessToken = await getAccessToken(tokenData.refresh_token)
+
+          if (accessToken) {
+            emailSent = await sendGmailEmails(registrationData, accessToken)
+
+            if (emailSent) {
+              console.log('Emails sent successfully via Gmail API')
+            }
+          }
+        }
+      } catch (gmailError) {
+        console.error('Gmail API error:', gmailError)
+      }
     }
 
-    // Fallback to Resend if Gmail failed or not configured
+    // Fallback to Resend if Gmail API failed or not available
     if (!emailSent && resend) {
       try {
         // Email to admin
@@ -242,20 +307,19 @@ export async function POST(request: NextRequest) {
           `,
         })
 
-        console.log('Resend emails sent successfully (Gmail fallback)')
+        console.log('Emails sent successfully via Resend (Gmail API fallback)')
         emailSent = true
       } catch (emailError) {
         console.error('Email sending failed (data saved as backup):', emailError)
-        // Continue anyway since we have backup data
       }
     }
 
     if (!emailSent) {
-      console.log('Emails not sent - no email service configured. Data saved to backup.')
+      console.log('Emails not sent - no email service available. Data saved to backup.')
     }
 
     return NextResponse.json(
-      { message: 'Registration received successfully' },
+      { message: 'Registration received successfully', userId },
       { status: 200 }
     )
   } catch (error) {
