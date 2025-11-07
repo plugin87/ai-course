@@ -13,19 +13,19 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-dark-bg border-b border-dark-card/50 backdrop-blur-sm">
-      <nav className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-light">AI</span>
-          <span className="text-2xl font-bold text-primary">Design</span>
-          <span className="text-2xl font-bold text-light">System</span>
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 flex justify-between items-center">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <span className="text-lg sm:text-2xl font-bold text-light">AI</span>
+          <span className="text-lg sm:text-2xl font-bold text-primary">Design</span>
+          <span className="text-lg sm:text-2xl font-bold text-light leading-none">System</span>
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-10 list-none">
+        <ul className="hidden md:flex gap-8 md:gap-10 list-none">
           <li>
             <a
               href="#benefits"
-              className="text-text-light font-medium hover:text-primary transition-colors"
+              className="text-sm md:text-base text-text-light font-medium hover:text-primary transition-colors"
             >
               จุดเด่น
             </a>
@@ -33,7 +33,7 @@ export default function Header() {
           <li>
             <a
               href="#curriculum"
-              className="text-text-light font-medium hover:text-primary transition-colors"
+              className="text-sm md:text-base text-text-light font-medium hover:text-primary transition-colors"
             >
               หลักสูตร
             </a>
@@ -41,7 +41,7 @@ export default function Header() {
           <li>
             <a
               href="#faq"
-              className="text-text-light font-medium hover:text-primary transition-colors"
+              className="text-sm md:text-base text-text-light font-medium hover:text-primary transition-colors"
             >
               คำถาม
             </a>
@@ -49,7 +49,7 @@ export default function Header() {
           <li>
             <a
               href="#registration"
-              className="text-text-light font-medium hover:text-primary transition-colors"
+              className="text-sm md:text-base text-text-light font-medium hover:text-primary transition-colors"
             >
               ติดต่อ
             </a>
@@ -61,7 +61,7 @@ export default function Header() {
             const element = document.getElementById('registration')
             element?.scrollIntoView({ behavior: 'smooth' })
           }}
-          className="hidden md:block bg-primary text-dark font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all hover:shadow-lg hover:shadow-primary/50 hover:-translate-y-1"
+          className="hidden md:block bg-primary text-dark font-semibold px-5 md:px-6 py-2 rounded-lg text-sm md:text-base hover:bg-opacity-90 transition-all hover:shadow-lg hover:shadow-primary/50 hover:-translate-y-1"
         >
           สมัครเลย
         </button>
@@ -92,11 +92,11 @@ export default function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-dark-card/80 backdrop-blur-sm border-t border-dark-card/50">
-          <ul className="flex flex-col gap-0 list-none px-8 py-6">
+          <ul className="flex flex-col gap-0 list-none px-4 sm:px-6 py-4 sm:py-6">
             <li>
               <button
                 onClick={() => handleNavClick('benefits')}
-                className="w-full text-left py-3 text-text-light font-medium hover:text-primary transition-colors"
+                className="w-full text-left py-3 text-sm sm:text-base text-text-light font-medium hover:text-primary transition-colors"
               >
                 จุดเด่น
               </button>
@@ -104,7 +104,7 @@ export default function Header() {
             <li>
               <button
                 onClick={() => handleNavClick('curriculum')}
-                className="w-full text-left py-3 text-text-light font-medium hover:text-primary transition-colors"
+                className="w-full text-left py-3 text-sm sm:text-base text-text-light font-medium hover:text-primary transition-colors"
               >
                 หลักสูตร
               </button>
@@ -112,7 +112,7 @@ export default function Header() {
             <li>
               <button
                 onClick={() => handleNavClick('faq')}
-                className="w-full text-left py-3 text-text-light font-medium hover:text-primary transition-colors"
+                className="w-full text-left py-3 text-sm sm:text-base text-text-light font-medium hover:text-primary transition-colors"
               >
                 คำถาม
               </button>
@@ -120,15 +120,15 @@ export default function Header() {
             <li>
               <button
                 onClick={() => handleNavClick('registration')}
-                className="w-full text-left py-3 text-text-light font-medium hover:text-primary transition-colors"
+                className="w-full text-left py-3 text-sm sm:text-base text-text-light font-medium hover:text-primary transition-colors"
               >
                 ติดต่อ
               </button>
             </li>
-            <li className="pt-4 border-t border-dark-card/50">
+            <li className="pt-3 sm:pt-4 border-t border-dark-card/50">
               <button
                 onClick={() => handleNavClick('registration')}
-                className="w-full bg-gradient-to-r from-primary to-secondary text-dark font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-primary/50 transition-all"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-dark font-bold py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base hover:shadow-lg hover:shadow-primary/50 transition-all"
               >
                 สมัครเลย
               </button>

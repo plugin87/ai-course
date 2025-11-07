@@ -26,6 +26,28 @@ const config: Config = {
         xl: '80px',
         xxl: '160px',
       },
+      fontSize: {
+        // Fluid typography using clamp() for responsive scaling
+        // Formula: clamp(min, preferred, max)
+        'xs': 'clamp(0.75rem, 1vw, 0.875rem)',
+        'sm': 'clamp(0.875rem, 1.2vw, 1rem)',
+        'base': 'clamp(1rem, 1.4vw, 1.125rem)',
+        'lg': 'clamp(1.125rem, 1.6vw, 1.25rem)',
+        'xl': 'clamp(1.25rem, 2vw, 1.5rem)',
+        '2xl': 'clamp(1.5rem, 2.5vw, 1.875rem)',
+        '3xl': 'clamp(1.875rem, 3.2vw, 2.25rem)',
+        '4xl': 'clamp(2.25rem, 4vw, 2.5rem)',
+        '5xl': 'clamp(2.5rem, 5vw, 3rem)',
+        '6xl': 'clamp(3rem, 6vw, 3.75rem)',
+        '7xl': 'clamp(3.5rem, 7vw, 4.5rem)',
+      },
+      lineHeight: {
+        // Proportional line-height for better readability
+        'tight': '1.2',
+        'normal': '1.5',
+        'relaxed': '1.75',
+        'loose': '2',
+      },
       fontFamily: {
         sans: [
           '"IBM Plex Sans Thai"',

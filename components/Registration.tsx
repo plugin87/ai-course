@@ -56,53 +56,53 @@ export default function Registration() {
   return (
     <section
       id="registration"
-      className="py-32 px-8 bg-primary text-dark"
+      className="py-20 sm:py-28 md:py-32 px-4 sm:px-6 md:px-8 bg-primary text-dark"
     >
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl lg:text-6xl font-black mb-8 leading-tight">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 sm:mb-8 leading-tight">
             พร้อมเข้าร่วม AI Design System Bootcamp หรือยัง?
           </h2>
-          <p className="text-lg opacity-85 mb-12 leading-relaxed">
+          <p className="text-base sm:text-lg opacity-85 mb-8 sm:mb-12 leading-relaxed">
             สมัครสอบถามเพิ่มเติม ติดตามข้อมูล และรับสิทธิพิเศษ Early Bird ราคา 29,000 บาทเพียงนั้น!
           </p>
 
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12 py-8 border-y border-dark/20">
-            <div className="flex items-center gap-3 text-lg">
-              <Mail className="w-7 h-7 text-dark" />
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6 sm:gap-8 mb-8 sm:mb-12 py-6 sm:py-8 border-y border-dark/20">
+            <div className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
+              <Mail className="w-5 sm:w-7 h-5 sm:h-7 text-dark flex-shrink-0" />
               <span className="font-semibold">อีเมล: info@designlazyyy.com</span>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-8 justify-center mb-12">
-            <div className="flex items-start gap-3 text-base">
-              <span className="text-xl">🔒</span>
-              <span className="font-semibold pt-1">สามารถจ่ายผ่านบริษัทได้</span>
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center mb-8 sm:mb-12">
+            <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base">
+              <span className="text-lg sm:text-xl flex-shrink-0">🔒</span>
+              <span className="font-semibold pt-0.5">สามารถจ่ายผ่านบริษัทได้</span>
             </div>
-            <div className="flex items-start gap-3 text-base">
-              <span className="text-xl">📋</span>
-              <span className="font-semibold pt-1">ออกบิลในนามบริษัท</span>
+            <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base">
+              <span className="text-lg sm:text-xl flex-shrink-0">📋</span>
+              <span className="font-semibold pt-0.5">ออกบิลในนามบริษัท</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-dark/10 rounded-3xl p-10 md:p-14 backdrop-blur-sm max-w-2xl mx-auto">
+        <div className="bg-dark/10 rounded-3xl p-6 sm:p-10 md:p-14 backdrop-blur-sm max-w-2xl mx-auto">
           {submitted ? (
-            <div className="py-12 text-center">
-              <div className="text-7xl mb-4">✓</div>
-              <h3 className="text-3xl font-bold text-dark mb-3">
+            <div className="py-8 sm:py-12 text-center">
+              <div className="text-6xl sm:text-7xl mb-3 sm:mb-4">✓</div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-dark mb-2 sm:mb-3">
                 ขอบคุณสำหรับการสมัคร!
               </h3>
-              <p className="text-base opacity-85">
+              <p className="text-sm sm:text-base opacity-85">
                 เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-bold text-dark mb-2"
+                  className="block text-xs sm:text-sm font-bold text-dark mb-1.5 sm:mb-2"
                 >
                   ชื่อ-นามสกุล
                 </label>
@@ -114,14 +114,14 @@ export default function Registration() {
                   onChange={handleChange}
                   placeholder="กรุณากรอกชื่อ-นามสกุล"
                   required
-                  className="w-full px-4 py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium text-sm"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-bold text-dark mb-2"
+                  className="block text-xs sm:text-sm font-bold text-dark mb-1.5 sm:mb-2"
                 >
                   อีเมล
                 </label>
@@ -133,14 +133,14 @@ export default function Registration() {
                   onChange={handleChange}
                   placeholder="กรุณากรอกอีเมล"
                   required
-                  className="w-full px-4 py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium text-sm"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-bold text-dark mb-2"
+                  className="block text-xs sm:text-sm font-bold text-dark mb-1.5 sm:mb-2"
                 >
                   เบอร์โทรศัพท์
                 </label>
@@ -152,14 +152,14 @@ export default function Registration() {
                   onChange={handleChange}
                   placeholder="กรุณากรอกเบอร์โทร"
                   required
-                  className="w-full px-4 py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium text-sm"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="lineId"
-                  className="block text-sm font-bold text-dark mb-2"
+                  className="block text-xs sm:text-sm font-bold text-dark mb-1.5 sm:mb-2"
                 >
                   Line ID
                 </label>
@@ -171,19 +171,19 @@ export default function Registration() {
                   onChange={handleChange}
                   placeholder="กรุณากรอก Line ID"
                   required
-                  className="w-full px-4 py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium text-sm"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-dark text-primary py-4 px-6 rounded-lg font-bold text-lg hover:opacity-90 transition-all hover:shadow-lg hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-dark text-primary py-3 sm:py-4 px-4 sm:px-6 rounded-lg font-bold text-base sm:text-lg hover:opacity-90 transition-all hover:shadow-lg hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'กำลังส่ง...' : 'ลงทะเบียนรับสิทธิ์ Early Bird ฟรี!'}
               </button>
 
-              <p className="text-sm text-dark/70 text-center mt-4 font-medium">
+              <p className="text-xs sm:text-sm text-dark/70 text-center mt-3 sm:mt-4 font-medium">
                 เราจะติดต่อกลับภายใน 24 ชั่วโมง
               </p>
             </form>
