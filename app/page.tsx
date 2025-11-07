@@ -7,6 +7,7 @@ import CourseDetails from '@/components/CourseDetails'
 import TargetAudience from '@/components/TargetAudience'
 import Curriculum from '@/components/Curriculum'
 import Instructor from '@/components/Instructor'
+import BonusEbook from '@/components/BonusEbook'
 import Registration from '@/components/Registration'
 import SocialProof from '@/components/SocialProof'
 import FAQ from '@/components/FAQ'
@@ -22,6 +23,7 @@ export default function Home() {
       <TargetAudience />
       <Curriculum />
       <Instructor />
+      <BonusEbook />
       <Registration />
       <SocialProof />
       <FAQ />
