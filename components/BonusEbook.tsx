@@ -80,15 +80,6 @@ export default function BonusEbook() {
               </div>
             </div>
 
-            {/* Highlight Box */}
-            <div className="bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary rounded-2xl p-6">
-              <p className="text-light font-bold text-center text-lg">
-                📚 อย่างไรก็ตาม หากจำเป็นต้องใช้บางส่วน<br />
-                <span className="text-primary">ขอ</span>
-                อนุญาต
-                <span className="text-primary"> และอ้างอิงแหล่งที่มาด้วย</span>
-              </p>
-            </div>
           </div>
         </div>
 
