@@ -1,63 +1,63 @@
 export default function Curriculum() {
   const curriculum = [
     {
-      section: 'เดือนที่ 1: พื้นฐาน AI และ Design System',
-      week: 'Week 1',
+      section: 'Phase 1: Foundations of AI Design Systems',
+      week: 'สัปดาห์ 1-4',
       lessons: [
-        { number: 1, title: 'Overview AI & Design System', live: true },
-        { number: 2, title: 'Core Principles & System Design', live: false },
-        { number: 3, title: 'Tool Introduction (Figma, Cursor, AI)', live: false },
-        { number: 4, title: 'Workshop: AI in Design Basics', live: true },
+        { number: 1, title: 'Introduction to AI Design Systems', live: true },
+        { number: 2, title: 'Figma as a Design System Core', live: false },
+        { number: 3, title: 'Design Tokens & Variable Systems', live: false },
+        { number: 4, title: 'AI Tools for Designers', live: true },
       ]
     },
     {
-      section: 'เดือนที่ 2: Mathematical & CS Foundations',
-      week: 'Week 2',
+      section: 'Phase 2: Systematizing Design with Code',
+      week: 'สัปดาห์ 5-8',
       lessons: [
-        { number: 5, title: 'Linear Algebra & Probability for AI', live: true },
-        { number: 6, title: 'Python Programming for Designers', live: false },
-        { number: 7, title: 'Data Handling & APIs', live: false },
-        { number: 8, title: 'Case Study: Data Integration', live: true },
+        { number: 5, title: 'Introduction to Vibe Framework', live: true },
+        { number: 6, title: 'Building Components with AI Assist', live: false },
+        { number: 7, title: 'Sync Figma → Vibe → GitHub', live: false },
+        { number: 8, title: 'Component State & Props Design', live: true },
       ]
     },
     {
-      section: 'เดือนที่ 3: Human-AI Interaction & Ethics',
-      week: 'Week 3',
+      section: 'Phase 3: Generative AI in Design Systems',
+      week: 'สัปดาห์ 9-12',
       lessons: [
-        { number: 9, title: 'Human-AI System Design Principles', live: true },
-        { number: 10, title: 'UX in AI-driven Systems', live: false },
-        { number: 11, title: 'Automation & Mixed-initiative', live: false },
-        { number: 12, title: 'Risk Analysis & Ethics Workshop', live: true },
+        { number: 9, title: 'Prompt Engineering for Designers', live: true },
+        { number: 10, title: 'AI-Driven UX Patterns', live: false },
+        { number: 11, title: 'Generative Token & Style Creation', live: false },
+        { number: 12, title: 'Integrating AI Agents', live: true },
       ]
     },
     {
-      section: 'เดือนที่ 4: AI Component & Architecture',
-      week: 'Week 4',
+      section: 'Phase 4: DesignOps Automation & Documentation',
+      week: 'สัปดาห์ 13-16',
       lessons: [
-        { number: 13, title: 'Component Design with AI', live: true },
-        { number: 14, title: 'Generative Design & Algorithms', live: false },
-        { number: 15, title: 'System Architecture & MLOps', live: false },
-        { number: 16, title: 'Portfolio Review & Analysis', live: true },
+        { number: 13, title: 'DesignOps Overview', live: true },
+        { number: 14, title: 'Automating Design QA', live: false },
+        { number: 15, title: 'Smart Documentation', live: false },
+        { number: 16, title: 'System Versioning & Governance', live: true },
       ]
     },
     {
-      section: 'เดือนที่ 5: Implementation & Testing',
-      week: 'Week 5',
+      section: 'Phase 5: Collaborative AI & Team Scaling',
+      week: 'สัปดาห์ 17-20',
       lessons: [
-        { number: 17, title: 'AI-Assisted Component Development', live: true },
-        { number: 18, title: 'Testing & Validation', live: false },
-        { number: 19, title: 'Collaboration Tools & Workflow', live: false },
-        { number: 20, title: 'Project-based Learning Start', live: true },
+        { number: 17, title: 'Collaboration with AI', live: true },
+        { number: 18, title: 'AI in UX Research & Testing', live: false },
+        { number: 19, title: 'Scaling the Design System', live: false },
+        { number: 20, title: 'Cross-Platform Integration', live: true },
       ]
     },
     {
-      section: 'เดือนที่ 6: Industry & Capstone',
-      week: 'Week 6',
+      section: 'Phase 6: Final Project & Mastery',
+      week: 'สัปดาห์ 21-24',
       lessons: [
-        { number: 21, title: 'Industry Best Practices', live: true },
-        { number: 22, title: 'Case Studies (Fintech, Healthcare)', live: false },
-        { number: 23, title: 'Capstone Project Development', live: true },
-        { number: 24, title: 'Portfolio & Final Presentation', live: true },
+        { number: 21, title: 'System Planning & Setup', live: true },
+        { number: 22, title: 'AI-Driven Component Library', live: false },
+        { number: 23, title: 'Final Integration & Optimization', live: true },
+        { number: 24, title: 'Presentation & Evaluation', live: true },
       ]
     },
   ]
