@@ -77,7 +77,7 @@ export default function Registration() {
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 sm:gap-8 mb-8 sm:mb-12 py-6 sm:py-8 border-y border-dark/20">
             <div className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
               <Mail className="w-5 sm:w-7 h-5 sm:h-7 text-dark flex-shrink-0" />
-              <span className="font-semibold">อีเมล: info@designlazyyy.com</span>
+              <span className="font-semibold">อีเมล: designlazyyy@gmail.com</span>
             </div>
           </div>
 
