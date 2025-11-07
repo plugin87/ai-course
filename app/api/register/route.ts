@@ -94,7 +94,7 @@ async function sendGmailEmails(data: any, accessToken: string) {
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Line ID:</strong> ${lineId}</p>
         <hr/>
-        <p><em>Submitted at: ${new Date().toLocaleString('th-TH')}</em></p>
+        <p><em>Submitted at: ${new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}</em></p>
       `
     )
 
