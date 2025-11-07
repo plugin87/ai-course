@@ -40,7 +40,7 @@ export default function Instructor() {
             </div>
 
             {/* Testimonial Content */}
-            <div className="space-y-6 w-full">
+            <div className="space-y-6 w-full text-center">
               <div>
                 <p className="text-lg text-primary font-semibold">
                   Design System Expert & AI Specialist
