@@ -65,6 +65,7 @@ async function sendEmails(data: any) {
         <p><strong>Line ID:</strong> ${lineId}</p>
         <hr/>
         <p><em>Submitted at: ${getCurrentTimestamp()}</em></p>
+        <p><strong>Contact:</strong> 099-414-5665</p>
       `,
     })
 
@@ -92,7 +93,9 @@ async function sendEmails(data: any) {
         <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
         <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
         <hr/>
-        <p>หากมีคำถาม โปรดติดต่อ: ${adminEmail}</p>
+        <p><strong>ติดต่อเรา:</strong></p>
+        <p>อีเมล: ${adminEmail}</p>
+        <p>โทรศัพท์: 099-414-5665</p>
         <p><em>ขอบคุณ!</em></p>
       `,
     })
