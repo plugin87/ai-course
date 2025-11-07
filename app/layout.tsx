@@ -19,6 +19,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th">
+      <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-JH9Z4VYF85"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-JH9Z4VYF85');
+            `,
+          }}
+        />
+      </head>
       <body className="bg-dark text-light">
         {children}
       </body>
