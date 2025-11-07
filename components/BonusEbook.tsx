@@ -24,17 +24,16 @@ export default function BonusEbook() {
         </div>
 
         {/* Images Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-12">
           {/* Book Cover */}
-          <div className="relative group flex justify-center">
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-            <div className="relative bg-dark rounded-2xl p-8 flex justify-center">
+          <div className="flex justify-center">
+            <div className="bg-dark rounded-2xl p-8 flex justify-center">
               <Image
                 src="/images/Book cover.png"
                 alt="E-Book Cover - From Graphic Design สู่ UX/UI Designer"
                 width={300}
                 height={400}
-                className="w-full max-w-xs h-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+                className="w-full max-w-xs h-auto rounded-xl shadow-2xl"
               />
             </div>
           </div>
