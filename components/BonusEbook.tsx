@@ -23,10 +23,10 @@ export default function BonusEbook() {
           </p>
         </div>
 
-        {/* Content Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        {/* Images Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Book Cover */}
-          <div className="relative group">
+          <div className="relative group flex justify-center">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
             <div className="relative bg-dark rounded-2xl p-8 flex justify-center">
               <Image
@@ -34,52 +34,52 @@ export default function BonusEbook() {
                 alt="E-Book Cover - From Graphic Design สู่ UX/UI Designer"
                 width={300}
                 height={400}
-                className="w-full max-w-sm h-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+                className="w-full max-w-xs h-auto rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>
 
           {/* Content List */}
-          <div className="space-y-8">
-            <div className="bg-dark-card/50 backdrop-blur rounded-2xl p-8 border border-primary/20 hover:border-primary/50 transition-all">
-              <h3 className="text-2xl font-bold text-light mb-6 flex items-center gap-3">
-                <span className="text-3xl">📖</span>
-                เนื้อหาภายในเล่ม
-              </h3>
+          <div className="flex justify-center">
+            <Image
+              src="/images/01. List of Content.png"
+              alt="E-Book Content List"
+              width={400}
+              height={500}
+              className="w-full max-w-sm rounded-xl shadow-2xl"
+            />
+          </div>
+        </div>
 
-              <Image
-                src="/images/01. List of Content.png"
-                alt="E-Book Content List"
-                width={400}
-                height={500}
-                className="w-full rounded-xl shadow-xl mb-6"
-              />
+        {/* Benefits Section */}
+        <div className="bg-dark-card/50 backdrop-blur rounded-2xl p-8 border border-primary/20 hover:border-primary/50 transition-all max-w-3xl mx-auto mb-12">
+          <h3 className="text-2xl font-bold text-light mb-6 flex items-center gap-3 justify-center">
+            <span className="text-3xl">📖</span>
+            เนื้อหาภายในเล่ม
+          </h3>
 
-              <div className="space-y-3">
-                <p className="text-text-light leading-relaxed">
-                  E-Book นี้ออกแบบมาเป็นคู่มือครอบจักรวาล สำหรับการเดินทางจาก Graphic Design สู่ UX/UI Designer
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-3 text-text-light">
-                    <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
-                    <span>รวมความรู้พื้นฐานสำคัญ ตั้งแต่หลักการถึงการปฏิบัติ</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-text-light">
-                    <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
-                    <span>ตัวอย่างโปรเจกต์จริงและ Case Study ที่ใช้ได้จริง</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-text-light">
-                    <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
-                    <span>Tips & Tricks จากผู้ทำงานมากกว่า 15 ปี</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-text-light">
-                    <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
-                    <span>Accessible ตลอดชีวิตก職าของคุณ</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
+          <div className="space-y-3">
+            <p className="text-text-light leading-relaxed text-center mb-6">
+              E-Book นี้ออกแบบมาเป็นคู่มือครอบจักรวาล สำหรับการเดินทางจาก Graphic Design สู่ UX/UI Designer
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-3 text-text-light">
+                <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
+                <span>รวมความรู้พื้นฐานสำคัญ ตั้งแต่หลักการถึงการปฏิบัติ</span>
+              </li>
+              <li className="flex items-start gap-3 text-text-light">
+                <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
+                <span>ตัวอย่างโปรเจกต์จริงและ Case Study ที่ใช้ได้จริง</span>
+              </li>
+              <li className="flex items-start gap-3 text-text-light">
+                <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
+                <span>Tips & Tricks จากผู้ทำงานมากกว่า 15 ปี</span>
+              </li>
+              <li className="flex items-start gap-3 text-text-light">
+                <span className="text-primary text-lg mt-0.5 flex-shrink-0">⭐</span>
+                <span>Accessible ตลอดชีวิตก職าของคุณ</span>
+              </li>
+            </ul>
           </div>
         </div>
 
