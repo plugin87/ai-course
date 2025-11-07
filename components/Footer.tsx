@@ -32,12 +32,6 @@ export default function Footer() {
             >
               ติดต่อเรา
             </a>
-            <a
-              href="#"
-              className="text-primary hover:text-white transition-colors"
-            >
-              นโยบายความเป็นส่วนตัว
-            </a>
           </div>
 
           <div className="border-t border-gray-700 pt-8 space-y-2 text-sm opacity-70">
