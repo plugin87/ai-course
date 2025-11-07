@@ -24,7 +24,7 @@ export default function BonusEbook() {
         </div>
 
         {/* Images Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-12">
           {/* Book Cover */}
           <div className="relative group flex justify-center">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
