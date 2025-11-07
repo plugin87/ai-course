@@ -1,6 +1,7 @@
 import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import nodemailer from 'nodemailer'
 
 // Initialize Resend with API key from environment
 const resendApiKey = process.env.RESEND_API_KEY || ''
@@ -10,6 +11,18 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
+
+// Initialize Gmail SMTP transporter
+const gmailTransporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER || '',
+    pass: process.env.GMAIL_APP_PASSWORD || '',
+  },
+})
+
+// Check if Gmail is configured
+const isGmailConfigured = !!(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD)
 
 // Save registration data to Supabase database
 async function saveToSupabase(data: any) {
@@ -40,6 +53,70 @@ async function saveToSupabase(data: any) {
     return true
   } catch (error) {
     console.error('Error saving to Supabase:', error)
+    return false
+  }
+}
+
+// Send emails via Gmail SMTP
+async function sendGmailEmails(data: any) {
+  if (!isGmailConfigured) {
+    console.warn('Gmail not configured - skipping email send')
+    return false
+  }
+
+  try {
+    const { name, email, phone, lineId } = data
+
+    // Email to admin (designlazyyy@gmail.com)
+    await gmailTransporter.sendMail({
+      from: `"AI Design System" <${process.env.GMAIL_USER}>`,
+      to: 'designlazyyy@gmail.com',
+      subject: 'New Course Registration - AI Design System Bootcamp',
+      html: `
+        <h2>New Registration Received!</h2>
+        <p><strong>Course:</strong> AI Design System Bootcamp</p>
+        <hr/>
+        <h3>Applicant Information:</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Line ID:</strong> ${lineId}</p>
+        <hr/>
+        <p><em>Submitted at: ${new Date().toLocaleString('th-TH')}</em></p>
+      `,
+    })
+
+    // Confirmation email to user
+    await gmailTransporter.sendMail({
+      from: `"AI Design System Bootcamp" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'ยืนยันการลงทะเบียน - AI Design System Bootcamp',
+      html: `
+        <h2>ขอบคุณที่สมัครเข้าร่วม AI Design System Bootcamp!</h2>
+        <p>สวัสดี ${name},</p>
+        <p>เราได้รับการลงทะเบียนของคุณแล้ว เราจะติดต่อกลับให้ท่านภายใน 24 ชั่วโมง</p>
+        <hr/>
+        <h3>ข้อมูลการลงทะเบียน:</h3>
+        <p><strong>ชื่อ:</strong> ${name}</p>
+        <p><strong>อีเมล:</strong> ${email}</p>
+        <p><strong>เบอร์โทร:</strong> ${phone}</p>
+        <p><strong>Line ID:</strong> ${lineId}</p>
+        <hr/>
+        <h3>รายละเอียดคอร์ส:</h3>
+        <p><strong>ระยะเวลา:</strong> 6 เดือนเต็ม 192 ชั่วโมง</p>
+        <p><strong>เรียน:</strong> สัปดาห์ละ 8 ชั่วโมง</p>
+        <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
+        <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
+        <hr/>
+        <p>หากมีคำถาม โปรดติดต่อ: designlazyyy@gmail.com</p>
+        <p><em>ขอบคุณ!</em></p>
+      `,
+    })
+
+    console.log('Gmail emails sent successfully')
+    return true
+  } catch (error) {
+    console.error('Gmail sending failed:', error)
     return false
   }
 }
@@ -110,13 +187,19 @@ export async function POST(request: NextRequest) {
       console.warn('Registration not saved to Supabase, but saved locally')
     }
 
-    // Try to send emails via Resend (if API key is configured)
-    if (resend) {
+    // Try to send emails via Gmail SMTP first (primary method)
+    let emailSent = false
+    if (isGmailConfigured) {
+      emailSent = await sendGmailEmails(registrationData)
+    }
+
+    // Fallback to Resend if Gmail failed or not configured
+    if (!emailSent && resend) {
       try {
-        // Email to admin (info@designlazyyy.com)
+        // Email to admin
         await resend.emails.send({
           from: 'AI Design System <onboarding@resend.dev>',
-          to: 'info@designlazyyy.com',
+          to: 'designlazyyy@gmail.com',
           subject: 'New Course Registration - AI Design System Bootcamp',
           html: `
             <h2>New Registration Received!</h2>
@@ -150,22 +233,25 @@ export async function POST(request: NextRequest) {
             <hr/>
             <h3>รายละเอียดคอร์ส:</h3>
             <p><strong>ระยะเวลา:</strong> 6 เดือนเต็ม 192 ชั่วโมง</p>
-            <p><strong>เรียน:</strong> สัปดาห์ละ 2 วัน (8 ชั่วโมง)</p>
+            <p><strong>เรียน:</strong> สัปดาห์ละ 8 ชั่วโมง</p>
             <p><strong>เริ่มเรียน:</strong> 1 ธันวาคม 2025</p>
             <p><strong>ราคา Early Bird:</strong> 29,000 บาท (ลด 36% จากปกติ 45,000 บาท)</p>
             <hr/>
-            <p>หากมีคำถาม โปรดติดต่อ: info@designlazyyy.com</p>
+            <p>หากมีคำถาม โปรดติดต่อ: designlazyyy@gmail.com</p>
             <p><em>ขอบคุณ!</em></p>
           `,
         })
 
-        console.log('Emails sent successfully')
+        console.log('Resend emails sent successfully (Gmail fallback)')
+        emailSent = true
       } catch (emailError) {
         console.error('Email sending failed (data saved as backup):', emailError)
         // Continue anyway since we have backup data
       }
-    } else {
-      console.log('RESEND_API_KEY not configured - emails will not be sent. Data saved to backup.')
+    }
+
+    if (!emailSent) {
+      console.log('Emails not sent - no email service configured. Data saved to backup.')
     }
 
     return NextResponse.json(
