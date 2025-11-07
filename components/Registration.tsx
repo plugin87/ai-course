@@ -161,6 +161,9 @@ export default function Registration() {
                   onChange={handleChange}
                   placeholder="กรุณากรอกเบอร์โทร"
                   required
+                  pattern="[0-9]{10,}"
+                  inputMode="numeric"
+                  title="โปรดป้อนเบอร์โทรให้ถูกต้อง (10 หลักขึ้นไป)"
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-dark/30 bg-white rounded-lg focus:outline-none focus:border-dark text-dark placeholder-dark/50 font-medium text-sm"
                 />
               </div>
