@@ -6,9 +6,21 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
-// Get current UTC time (Supabase will store in UTC, display layer will format to Bangkok)
+// Get current Bangkok time in format: YYYY-MM-DD HH:MM:SS.mm (UTC+7)
 function getCurrentTimestamp(): string {
-  return new Date().toISOString()
+  const now = new Date()
+  // Bangkok is UTC+7
+  const bangkokTime = new Date(now.getTime() + (7 * 60 * 60 * 1000))
+
+  const year = bangkokTime.getUTCFullYear()
+  const month = String(bangkokTime.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(bangkokTime.getUTCDate()).padStart(2, '0')
+  const hours = String(bangkokTime.getUTCHours()).padStart(2, '0')
+  const minutes = String(bangkokTime.getUTCMinutes()).padStart(2, '0')
+  const seconds = String(bangkokTime.getUTCSeconds()).padStart(2, '0')
+  const ms = String(bangkokTime.getUTCMilliseconds()).padStart(3, '0').substring(0, 2)
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${ms}`
 }
 
 // Get a new access token using refresh token
