@@ -29,18 +29,18 @@ export default function Instructor() {
 
         {/* Testimonial Card */}
         <div className="bg-dark-card rounded-3xl p-12">
-          <div className="flex flex-col gap-8">
-            {/* Image - Top Left */}
-            <div className="flex">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            {/* Image - Left */}
+            <div className="flex flex-shrink-0">
               <img
                 src="/images/instructor.jpeg"
                 alt="Designlazyyy"
-                className="w-40 h-40 rounded-2xl object-cover flex-shrink-0"
+                className="w-56 h-56 rounded-2xl object-cover"
               />
             </div>
 
             {/* Testimonial Content */}
-            <div className="space-y-6">
+            <div className="space-y-6 flex-1">
               <div>
                 <p className="text-lg text-primary font-semibold">
                   Design System Expert & UX/UI Design Master
