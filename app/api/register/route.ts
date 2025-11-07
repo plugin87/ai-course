@@ -6,9 +6,17 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
-// Get current UTC time (Supabase will store in UTC, display layer will format to Bangkok)
+// Get current UTC time in format: YYYY-MM-DD HH:MM:SS.mm
 function getCurrentTimestamp(): string {
-  return new Date().toISOString()
+  const now = new Date()
+  const year = now.getUTCFullYear()
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(now.getUTCDate()).padStart(2, '0')
+  const hours = String(now.getUTCHours()).padStart(2, '0')
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0')
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0')
+  const ms = String(now.getUTCMilliseconds()).padStart(3, '0').substring(0, 2)
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${ms}`
 }
 
 // Get a new access token using refresh token
@@ -150,13 +158,21 @@ async function saveToSupabase(data: any) {
           submitted_at: getCurrentTimestamp(),
         },
       ])
+      .select()
 
     if (error) {
-      console.error('Supabase insert error:', error)
+      console.error('❌ Supabase insert FAILED:', JSON.stringify(error, null, 2))
+      console.error('Data attempted to insert:', JSON.stringify({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        line_id: data.lineId,
+        submitted_at: getCurrentTimestamp(),
+      }, null, 2))
       return false
     }
 
-    console.log('Registration saved to Supabase:', savedData)
+    console.log('✅ Registration saved to Supabase:', savedData)
     return true
   } catch (error) {
     console.error('Error saving to Supabase:', error)
